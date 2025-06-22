@@ -2,9 +2,9 @@ package main
 
 import (
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 	queue "github.com/shu12388y/server/pkg/queues"
+	routes "github.com/shu12388y/server/pkg/services/auth/routes"
 )
 
 func main() {
@@ -30,6 +30,10 @@ func main() {
 
 	// logger
 	server.Use(gin.Logger())
+
+	// routes
+	route := server.Group("/api/v1")
+	routes.Routes(route)
 
 	// sever port
 	server.Run(":5000")

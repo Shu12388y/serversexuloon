@@ -7,9 +7,16 @@ vars:
 
 tasks:
 
+
   build:
     cmds:
-      - go run ./cmd/main.go
+      - go build -o ./bin/bin ./cmd/main.go
+  start:
+    cmds:
+      - ./bin/bin
+  dev:
+    cmds:
+      - nodemon --excue go run ./cmd/main.go
   default:
     cmds:
       - echo "{{.GREETING}}"
