@@ -16,7 +16,7 @@ tasks:
       - ./bin/bin
   dev:
     cmds:
-      - nodemon --excue go run ./cmd/main.go
+      - nodemon --exec go run ./cmd/main.go
   default:
     cmds:
       - echo "{{.GREETING}}"
