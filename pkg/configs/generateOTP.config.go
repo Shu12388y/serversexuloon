@@ -5,12 +5,9 @@ import (
 	"time"
 )
 
-func GenerateOTP() string {
-
+// GenerateOTP returns a 4-digit OTP as a string
+func GenerateOTP() int {
 	rand.Seed(time.Now().UnixNano())
-
-	otp := string(rune(rand.Intn(9000) + 1000))
-
+	otp := rand.Intn(9000) + 1000
 	return otp
-
 }

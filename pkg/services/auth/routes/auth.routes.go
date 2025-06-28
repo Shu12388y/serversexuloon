@@ -7,4 +7,7 @@ import (
 
 func Routes(r *gin.RouterGroup) {
 	r.POST("/signup", controller.SignUpController)
+	r.POST("/verify", controller.VerifyAccount)
+	r.POST("/signin", controller.SignInController)
+	r.POST("/session", controller.SessionController)
 }

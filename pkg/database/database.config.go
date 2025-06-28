@@ -3,6 +3,7 @@ package pkg
 import (
 	"context"
 	"fmt"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
@@ -12,6 +13,10 @@ import (
 
 // MongoDBClientConnection returns a reference to the MongoDB database
 func MongoDBClientConnection() *mongo.Database {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file")
+	}
 	var DB_URI = os.Getenv("DBURI")
 
 	if DB_URI == "" {
