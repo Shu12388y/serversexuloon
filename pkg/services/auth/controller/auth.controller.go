@@ -22,7 +22,7 @@ func SignUpController(c *gin.Context) {
 	var existingUser schema.User
 
 	// Use a reasonable context timeout like 5 seconds instead of 5ms
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Millisecond)
 	defer cancel()
 
 	// Bind and validate request body
@@ -99,7 +99,7 @@ func VerifyAccount(c *gin.Context) {
 	var user schema.User
 	var existingUser schema.User
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Millisecond)
 	defer cancel()
 
 	c.BindJSON(&user)
@@ -144,7 +144,7 @@ func SignInController(c *gin.Context) {
 	var user schema.User
 	var existingUser schema.User
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Millisecond)
 	defer cancel()
 
 	c.BindJSON(&user)
@@ -160,9 +160,8 @@ func SignInController(c *gin.Context) {
 		})
 		return
 	}
-
 	// check the user verified the user
-	if !existingUser.Verified {
+	if existingUser.Verified == false {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Account is not verified",
 		})
@@ -198,7 +197,7 @@ func SessionController(c *gin.Context) {
 	var user schema.User
 	var existingUser schema.User
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Millisecond)
 	defer cancel()
 
 	c.BindJSON(&user)
@@ -216,7 +215,7 @@ func SessionController(c *gin.Context) {
 	}
 
 	// check the user verified the user
-	if !existingUser.Verified {
+	if existingUser.Verified == false {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Account is not verified",
 		})
@@ -228,6 +227,14 @@ func SessionController(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Wrong OTP",
 		})
+	}
+
+	if existingUser.AccessToken != "" && existingUser.RefreshToken != "" {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "success",
+			"token":   existingUser.RefreshToken,
+		})
+		return
 	}
 
 	// generate the sesssion
